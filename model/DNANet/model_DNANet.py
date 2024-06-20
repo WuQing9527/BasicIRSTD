@@ -30,9 +30,9 @@ class ChannelAttention(nn.Module):
         super(ChannelAttention, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
-        self.fc1   = nn.Conv2d(in_planes, in_planes // 8, 1, bias=False)
+        self.fc1   = nn.Conv2d(in_planes, in_planes // 10, 1, bias=False)
         self.relu1 = nn.ReLU()
-        self.fc2   = nn.Conv2d(in_planes // 8, in_planes, 1, bias=False)
+        self.fc2   = nn.Conv2d(in_planes // 10, in_planes, 1, bias=False)
         self.sigmoid = nn.Sigmoid()
     def forward(self, x):
         avg_out = self.fc2(self.relu1(self.fc1(self.avg_pool(x))))
@@ -88,7 +88,7 @@ class Res_CBAM_block(nn.Module):
         return out
 
 class DNANet(nn.Module):
-    def __init__(self, num_classes=1,input_channels=1, block=Res_CBAM_block, num_blocks=[2, 2, 2, 2], nb_filter=[8,16, 32, 64, 128], deep_supervision=True, mode='test'):
+    def __init__(self, num_classes=1,input_channels=1, block=Res_CBAM_block, num_blocks=[2, 2, 2, 2], nb_filter=[10,20, 40, 80, 160], deep_supervision=True, mode='test'):
         super(DNANet, self).__init__()
         self.mode = mode
         self.relu = nn.ReLU(inplace = True)
